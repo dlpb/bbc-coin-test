@@ -10,13 +10,6 @@ logs/
 # Mac OS X
 .DS_Store
 
-# RPM build
-BUILD/
-RPMS/
-SPECS/
-SOURCES/
-SRPMS/
-
 # SBT
 .sbt_completion_cache
 .sbtserver
@@ -27,6 +20,3 @@ project/boot/
 project/plugins/project
 project/sbt-ui.sbt
 target/
-
-# rms-speculate
-rms-the-beatles

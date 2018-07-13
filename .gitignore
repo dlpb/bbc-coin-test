@@ -1,2 +1,32 @@
 *.class
 *.log
+# IntelliJ
+.idea/
+*.iml
+
+# Application Logs
+logs/
+
+# Mac OS X
+.DS_Store
+
+# RPM build
+BUILD/
+RPMS/
+SPECS/
+SOURCES/
+SRPMS/
+
+# SBT
+.sbt_completion_cache
+.sbtserver
+.sbtopts
+project/.sbtserver
+project/.sbtserver.lock
+project/boot/
+project/plugins/project
+project/sbt-ui.sbt
+target/
+
+# rms-speculate
+rms-the-beatles

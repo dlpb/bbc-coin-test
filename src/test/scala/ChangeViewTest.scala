@@ -42,14 +42,14 @@ class ChangeViewTest extends FlatSpec with Matchers {
     val change = Map(
       Denomination(1) -> 1
     )
-    new ChangeView().map(change) should be("1x1p")
+    new ChangeView().map(change) should be("1 x 1p")
   }
 
   it should "map a map of change of 2 coin to a string of coins" in {
     val change = Map(
       Denomination(1) -> 2
     )
-    new ChangeView().map(change) should be("2x1p")
+    new ChangeView().map(change) should be("2 x 1p")
   }
 
   it should "map a map of change of 2 types coin to a string of coins" in {
@@ -57,6 +57,6 @@ class ChangeViewTest extends FlatSpec with Matchers {
       Denomination(200) -> 1,
       Denomination(20) -> 2
     )
-    new ChangeView().map(change) should be("1x£2, 2x20p")
+    new ChangeView().map(change) should be("1 x £2, 2 x 20p")
   }
 }

@@ -1,6 +1,6 @@
 class ChangeView {
   def map(change: Map[Denomination, Int]): String = change map {
-    denomination => s"${denomination._2}x${ChangeView.map(denomination._1)}"
+    denomination => s"${denomination._2} x ${ChangeView.map(denomination._1)}"
   } mkString ", "
 }
 

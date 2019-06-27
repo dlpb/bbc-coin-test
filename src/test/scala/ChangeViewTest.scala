@@ -3,7 +3,7 @@ import org.scalatest.{FlatSpec, Matchers}
 class ChangeViewTest extends FlatSpec with Matchers {
 
   "ChangeView" should "map a denomination with value under 100 to a to a pence presentation denomination" in {
-    val displayDenomination = ChangeView.map(Denomination(1))
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(1))
     displayDenomination.originalDenomination should be(Denomination(1))
     displayDenomination.displayValue should be(1)
     displayDenomination.prefix should be(None)
@@ -12,7 +12,7 @@ class ChangeViewTest extends FlatSpec with Matchers {
   }
 
   it should "map a denomination with a value over 100 to a pounds presentation denomination" in {
-    val displayDenomination = ChangeView.map(Denomination(200))
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(200))
     displayDenomination.originalDenomination should be(Denomination(200))
     displayDenomination.displayValue should be(2)
     displayDenomination.prefix should be(Some("£"))
@@ -21,7 +21,7 @@ class ChangeViewTest extends FlatSpec with Matchers {
   }
 
   it should "map a denomination with a value of 100 to a pounds presentation denomination" in {
-    val displayDenomination = ChangeView.map(Denomination(100))
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(100))
     displayDenomination.originalDenomination should be(Denomination(100))
     displayDenomination.displayValue should be(1)
     displayDenomination.prefix should be(Some("£"))
@@ -30,7 +30,7 @@ class ChangeViewTest extends FlatSpec with Matchers {
   }
 
   it should "map a denomination with a value of 99 to a pence presentation denomination" in {
-    val displayDenomination = ChangeView.map(Denomination(99))
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(99))
     displayDenomination.originalDenomination should be(Denomination(99))
     displayDenomination.displayValue should be(99)
     displayDenomination.prefix should be(None)
@@ -42,14 +42,14 @@ class ChangeViewTest extends FlatSpec with Matchers {
     val change = Map(
       Denomination(1) -> 1
     )
-    new ChangeView().map(change) should be("1 x 1p")
+    new ChangeView().formatChangeAsDisplayString(change) should be("1 x 1p")
   }
 
   it should "map a map of change of 2 coin to a string of coins" in {
     val change = Map(
       Denomination(1) -> 2
     )
-    new ChangeView().map(change) should be("2 x 1p")
+    new ChangeView().formatChangeAsDisplayString(change) should be("2 x 1p")
   }
 
   it should "map a map of change of 2 types coin to a string of coins" in {
@@ -57,6 +57,6 @@ class ChangeViewTest extends FlatSpec with Matchers {
       Denomination(200) -> 1,
       Denomination(20) -> 2
     )
-    new ChangeView().map(change) should be("1 x £2, 2 x 20p")
+    new ChangeView().formatChangeAsDisplayString(change) should be("1 x £2, 2 x 20p")
   }
 }

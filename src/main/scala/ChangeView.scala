@@ -1,6 +1,6 @@
 class ChangeView {
-  def map(change: Map[Denomination, Int]): String = change map {
-    denomination => s"${denomination._2} x ${ChangeView.map(denomination._1)}"
+  def formatChangeAsDisplayString(change: Map[Denomination, Int]): String = change map {
+    denomination => s"${denomination._2} x ${ChangeView.mapToDisplayDenomination(denomination._1)}"
   } mkString ", "
 }
 
@@ -11,7 +11,7 @@ case class DisplayDenomination(originalDenomination: Denomination, displayValue:
 }
 
 object ChangeView {
-  def map(denomination: Denomination): DisplayDenomination = {
+  def mapToDisplayDenomination(denomination: Denomination): DisplayDenomination = {
     if(denomination.value >= 100) {
       DisplayDenomination(denomination, denomination.value / 100, Some("£"), None)
     } else {

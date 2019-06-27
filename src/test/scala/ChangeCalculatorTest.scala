@@ -66,5 +66,11 @@ class ChangeCalculatorTest extends FlatSpec with Matchers {
     )
   }
 
+  it should "return 0 change for an empty set of denominations" in {
+    val availableDenominations: ListMap[Denomination, Int] = ListMap().empty
+    val cc = new ChangeCalculator(availableDenominations)
+    cc.calculateChange(123) should be(Map.empty)
+  }
+
   //interesting edge case - what if you can't make change?
 }

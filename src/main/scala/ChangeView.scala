@@ -1,7 +1,7 @@
 class ChangeView {
   def formatChangeAsDisplayString(change: Map[Denomination, Int])(implicit displayFormat: DisplayFormats = DisplayFormats.poundsFormat): String = change map {
-    denomination => s"${denomination._2} x ${ChangeView.mapToDisplayDenomination(denomination._1, displayFormat)}"
-  } mkString ", "
+    denomination => s"${denomination._2} ${displayFormat.numberOfUnitString} ${ChangeView.mapToDisplayDenomination(denomination._1, displayFormat)}"
+  } mkString displayFormat.separator
 }
 
 case class DisplayDenomination(originalDenomination: Denomination, displayValue: Int, prefix: Option[String], suffix: Option[String]) {
@@ -21,9 +21,9 @@ object ChangeView {
 }
 object DisplayFormats {
   def poundsFormat = DisplayFormats(Some("£"), Some("p"))
-  def euroFormat = DisplayFormats(Some("€"), None)
+  def usFormat = DisplayFormats(Some("$"), Some("¢"))
 
   implicit def defaultFormat: DisplayFormats = poundsFormat
 }
 
-case class DisplayFormats(wholeUnitSymbol: Option[String], decimalUnitSymbol: Option[String], separator: String = ", ", numberOfUnitString: String = "×")
+case class DisplayFormats(wholeUnitSymbol: Option[String], decimalUnitSymbol: Option[String], separator: String = ", ", numberOfUnitString: String = "x")

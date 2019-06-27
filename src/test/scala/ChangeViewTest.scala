@@ -60,19 +60,19 @@ class ChangeViewTest extends FlatSpec with Matchers {
     new ChangeView().formatChangeAsDisplayString(change) should be("1 x £2, 2 x 20p")
   }
 
-  it should "display euro signs for euro formatted change" in {
-    val centDenomination = ChangeView.mapToDisplayDenomination(Denomination(99), DisplayFormats.euroFormat)
+  it should "display dollar signs for dollar formatted change" in {
+    val centDenomination = ChangeView.mapToDisplayDenomination(Denomination(99), DisplayFormats.usFormat)
     centDenomination.originalDenomination should be(Denomination(99))
     centDenomination.displayValue should be(99)
     centDenomination.prefix should be(None)
-    centDenomination.suffix should be(None)
-    centDenomination.toString should be("99")
+    centDenomination.suffix should be(Some("¢"))
+    centDenomination.toString should be("99¢")
 
-    val wholeDenominiation = ChangeView.mapToDisplayDenomination(Denomination(100), DisplayFormats.euroFormat)
+    val wholeDenominiation = ChangeView.mapToDisplayDenomination(Denomination(100), DisplayFormats.usFormat)
     wholeDenominiation.originalDenomination should be(Denomination(100))
     wholeDenominiation.displayValue should be(1)
-    wholeDenominiation.prefix should be(Some("€"))
+    wholeDenominiation.prefix should be(Some("$"))
     wholeDenominiation.suffix should be(None)
-    wholeDenominiation.toString should be("€1")
+    wholeDenominiation.toString should be("$1")
   }
 }

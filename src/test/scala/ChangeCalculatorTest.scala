@@ -65,4 +65,6 @@ class ChangeCalculatorTest extends FlatSpec with Matchers {
       )
     )
   }
+
+  //interesting edge case - what if you can't make change?
 }

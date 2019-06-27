@@ -1,11 +1,22 @@
 class ChangeCalculator {
   def calculateChange(amount: Int): Map[Int, Int] = {
-    if(amount == 123) {
-      Map(100->1, 20->1, 2->1, 1->1)
+
+    val denominations = List(200,100,50,20,10,5,2,1)
+
+    def calculate(amount: Int, denominations: List[Int], change: Map[Int, Int]): Map[Int, Int] = {
+      if(amount <= 0  || denominations.isEmpty) change
+      else {
+        val highestAvailableDenomination = denominations.head
+        val numberOfDenomination = amount / highestAvailableDenomination
+        val remainingAmount = amount - (numberOfDenomination * highestAvailableDenomination)
+
+        val newChange =
+          if(numberOfDenomination == 0) change
+          else change + (highestAvailableDenomination -> numberOfDenomination)
+        calculate(remainingAmount, denominations.tail, newChange)
+      }
     }
-    else if(amount == 3) {
-      Map(2->1, 1->1)
-    }
-    else Map(1->1)
+
+    calculate(amount, denominations, Map())
   }
 }

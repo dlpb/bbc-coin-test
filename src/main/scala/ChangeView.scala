@@ -10,6 +10,10 @@ case class DisplayDenomination(originalDenomination: Denomination, displayValue:
 
 object ChangeView {
   def map(denomination: Denomination): DisplayDenomination = {
-    DisplayDenomination(denomination, denomination.value, None, Some("p"))
+    if(denomination.value >= 100) {
+      DisplayDenomination(denomination, denomination.value / 100, Some("£"), None)
+    } else {
+      DisplayDenomination(denomination, denomination.value, None, Some("p"))
+    }
   }
 }

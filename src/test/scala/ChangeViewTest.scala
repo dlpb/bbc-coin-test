@@ -56,13 +56,13 @@ class ChangeViewTest extends FlatSpec with Matchers {
     assertFormatForLocale(DisplayFormat.germanyFormat, 99, 100, "99c", "1,00 €")
   }
 
-  private def assertFormatForLocale(format: DisplayFormat, cents: Int, whole: Int, expectedCents: String, expectedWhole: String) = {
-    val centDenomination = ChangeView.mapToDisplayDenomination(Denomination(cents), format)
-    centDenomination.originalDenomination should be(Denomination(cents))
-    centDenomination.toString should be(expectedCents)
+  private def assertFormatForLocale(format: DisplayFormat, decimal: Int, whole: Int, expectedDecimal: String, expectedWhole: String) = {
+    val centDenomination = ChangeView.mapToDisplayDenomination(Denomination(decimal), format)
+    centDenomination.originalDenomination should be(Denomination(decimal))
+    centDenomination.toString should be(expectedDecimal)
 
-    val wholeDenominiation = ChangeView.mapToDisplayDenomination(Denomination(whole), format)
-    wholeDenominiation.originalDenomination should be(Denomination(whole))
-    wholeDenominiation.toString should be(expectedWhole)
+    val wholeDenomination = ChangeView.mapToDisplayDenomination(Denomination(whole), format)
+    wholeDenomination.originalDenomination should be(Denomination(whole))
+    wholeDenomination.toString should be(expectedWhole)
   }
 }

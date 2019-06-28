@@ -1,7 +1,7 @@
 object CoinConverter {
 
   def convertToCoins(amount: Int): String = {
-    import DisplayFormats.defaultFormat
+    import DisplayFormat.defaultFormat
 
     val change = new ChangeCalculator(Denomination.infiniteAmount).calculateChange(amount)
     val view = new ChangeView().formatChangeAsDisplayString(change)

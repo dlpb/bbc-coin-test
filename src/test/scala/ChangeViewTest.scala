@@ -3,38 +3,26 @@ import org.scalatest.{FlatSpec, Matchers}
 class ChangeViewTest extends FlatSpec with Matchers {
 
   "ChangeView" should "map a denomination with value under 100 to a to a pence presentation denomination" in {
-    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(1), DisplayFormats.poundsFormat)
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(1), DisplayFormat.ukFormat)
     displayDenomination.originalDenomination should be(Denomination(1))
-    displayDenomination.displayValue should be(1)
-    displayDenomination.prefix should be(None)
-    displayDenomination.suffix should be(Some("p"))
     displayDenomination.toString should be("1p")
   }
 
   it should "map a denomination with a value over 100 to a pounds presentation denomination" in {
-    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(200), DisplayFormats.poundsFormat)
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(200), DisplayFormat.ukFormat)
     displayDenomination.originalDenomination should be(Denomination(200))
-    displayDenomination.displayValue should be(2)
-    displayDenomination.prefix should be(Some("£"))
-    displayDenomination.suffix should be(None)
-    displayDenomination.toString should be("£2")
+    displayDenomination.toString should be("£2.00")
   }
 
   it should "map a denomination with a value of 100 to a pounds presentation denomination" in {
-    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(100), DisplayFormats.poundsFormat)
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(100), DisplayFormat.ukFormat)
     displayDenomination.originalDenomination should be(Denomination(100))
-    displayDenomination.displayValue should be(1)
-    displayDenomination.prefix should be(Some("£"))
-    displayDenomination.suffix should be(None)
-    displayDenomination.toString should be("£1")
+    displayDenomination.toString should be("£1.00")
   }
 
   it should "map a denomination with a value of 99 to a pence presentation denomination" in {
-    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(99), DisplayFormats.poundsFormat)
+    val displayDenomination = ChangeView.mapToDisplayDenomination(Denomination(99), DisplayFormat.ukFormat)
     displayDenomination.originalDenomination should be(Denomination(99))
-    displayDenomination.displayValue should be(99)
-    displayDenomination.prefix should be(None)
-    displayDenomination.suffix should be(Some("p"))
     displayDenomination.toString should be("99p")
   }
 
@@ -57,22 +45,24 @@ class ChangeViewTest extends FlatSpec with Matchers {
       Denomination(200) -> 1,
       Denomination(20) -> 2
     )
-    new ChangeView().formatChangeAsDisplayString(change) should be("1 x £2, 2 x 20p")
+    new ChangeView().formatChangeAsDisplayString(change) should be("1 x £2.00, 2 x 20p")
   }
 
   it should "display dollar signs for dollar formatted change" in {
-    val centDenomination = ChangeView.mapToDisplayDenomination(Denomination(99), DisplayFormats.usFormat)
-    centDenomination.originalDenomination should be(Denomination(99))
-    centDenomination.displayValue should be(99)
-    centDenomination.prefix should be(None)
-    centDenomination.suffix should be(Some("¢"))
-    centDenomination.toString should be("99¢")
+    assertFormatForLocale(DisplayFormat.usFormat, 99, 100, "99¢", "$1.00")
+  }
 
-    val wholeDenominiation = ChangeView.mapToDisplayDenomination(Denomination(100), DisplayFormats.usFormat)
-    wholeDenominiation.originalDenomination should be(Denomination(100))
-    wholeDenominiation.displayValue should be(1)
-    wholeDenominiation.prefix should be(Some("$"))
-    wholeDenominiation.suffix should be(None)
-    wholeDenominiation.toString should be("$1")
+  it should "display euro signs for euro formatted change with region that uses euro suffix" in {
+    assertFormatForLocale(DisplayFormat.germanyFormat, 99, 100, "99c", "1,00 €")
+  }
+
+  private def assertFormatForLocale(format: DisplayFormat, cents: Int, whole: Int, expectedCents: String, expectedWhole: String) = {
+    val centDenomination = ChangeView.mapToDisplayDenomination(Denomination(cents), format)
+    centDenomination.originalDenomination should be(Denomination(cents))
+    centDenomination.toString should be(expectedCents)
+
+    val wholeDenominiation = ChangeView.mapToDisplayDenomination(Denomination(whole), format)
+    wholeDenominiation.originalDenomination should be(Denomination(whole))
+    wholeDenominiation.toString should be(expectedWhole)
   }
 }
